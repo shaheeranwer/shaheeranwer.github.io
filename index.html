@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Ethical Hacker</title>
+<style>
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/ibm-plex/6.0.0/css/ibm-plex-mono.min.css');
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.css');
+
+  :root{
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #6b6b6b;
+    --link: #1d4ed8;
+    --line: #e5e5e5;
+    --tag-bg: #f4f4f5;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{
+    scroll-behavior: smooth;
+  }
+
+  html,body{
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    min-height:100vh;
+  }
+
+  a{ color: var(--link); text-decoration:none; }
+  a:hover{ text-decoration: underline; }
+
+  .wrap{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HEADER */
+  header{
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+  }
+  header .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .logo{
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .logo .cursor{
+    display:inline-block;
+    width: 8px;
+    height: 1.1em;
+    background: var(--link);
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  nav{
+    display:flex;
+    gap: 28px;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+  nav a{
+    color: var(--muted);
+  }
+  nav a:hover{ color: var(--link); text-decoration:none; }
+  nav a.active{ color: var(--fg); }
+
+  /* HERO */
+  .hero{
+    padding: 80px 0 64px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--link);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .eyebrow::before{
+    content:'';
+    display:inline-block;
+    width: 7px; height: 7px;
+    background: #16a34a;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(22,163,74,0.4);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(22,163,74,0.4); }
+    70%{ box-shadow: 0 0 0 8px rgba(22,163,74,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(22,163,74,0); }
+  }
+
+  h1{
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 46px);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    max-width: 760px;
+  }
+  h1 .hl{ color: var(--link); }
+
+  .hero p.lede{
+    margin-top: 24px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 620px;
+  }
+
+  .socials{
+    margin-top: 28px;
+    display:flex;
+    gap: 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+
+  /* SECTIONS */
+  section{
+    padding: 64px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 90px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  section.visible{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  section:last-of-type{ border-bottom: none; }
+
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom: 36px;
+  }
+  .section-title{
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .section-title .num{
+    color: var(--link);
+    margin-right: 8px;
+  }
+  .section-note{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* CERTS */
+  .cert-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .cert-card{
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .cert-card:hover{
+    border-color: var(--link);
+    transform: translateY(-2px);
+  }
+  .cert-card .cert-org{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .cert-card h3{
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .cert-card p{
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .cert-card .cert-link{
+    display:inline-block;
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .cert-status{
+    display:inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--tag-bg);
+    border-radius: 100px;
+    padding: 3px 10px;
+    margin-top: 10px;
+    color: var(--fg);
+  }
+
+  /* PROJECTS */
+  .project-list{
+    display:flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .project{
+    display:grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 24px;
+    align-items: start;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+  .project:first-child{ border-top: none; }
+  .project .pyear{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding-top: 3px;
+  }
+  .project h3{
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .project p{
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 560px;
+  }
+  .project .tags{
+    margin-top: 10px;
+    display:flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .project .tags span{
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--tag-bg);
+    border-radius: 100px;
+    padding: 3px 10px;
+    color: var(--muted);
+  }
+  .project .plink{
+    font-family: var(--mono);
+    font-size: 13px;
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+
+  /* SKILLS */
+  .skills-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .skill-col h4{
+    font-family: var(--mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--link);
+    margin-bottom: 14px;
+  }
+  .skill-col ul{
+    list-style:none;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 2;
+  }
+  .skill-col ul li::before{
+    content: '› ';
+    color: var(--link);
+    font-family: var(--mono);
+  }
+
+  /* FOOTER / CONTACT */
+  #contact .lede{
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 24px;
+  }
+  .contact-links{
+    font-family: var(--mono);
+    font-size: 14px;
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  footer{
+    padding: 28px 0;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 720px){
+    .cert-grid, .skills-grid{ grid-template-columns: 1fr; }
+    .project{ grid-template-columns: 1fr; gap: 6px; }
+    header .wrap{ flex-direction:column; gap:16px; }
+    nav{ gap: 18px; }
+    footer .wrap{ flex-direction:column; gap:10px; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#"><span id="logo-text"></span><span class="cursor"></span></a>
+    <nav>
+      <a href="#" class="active">home</a>
+      <a href="#certifications">certifications</a>
+      <a href="#projects">projects</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">status: actively probing</div>
+      <h1>
+        Breaking systems <span class="hl">ethically</span>,
+        so others don't break them maliciously.
+      </h1>
+      <p class="lede">
+        I'm an offensive security researcher and penetration tester focused on
+        web application security, network exploitation, and vulnerability research.
+        I hold industry certifications and document my findings through
+        responsible disclosure and write-ups.
+      </p>
+      <div class="socials">
+        <a href="#">GitHub</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">TryHackMe</a>
+        <a href="#">HackTheBox</a>
+      </div>
+    </section>
+
+    <section id="certifications">
+      <div class="section-head">
+        <div class="section-title"><span class="num">01.</span>Certifications</div>
+        <div class="section-note">verified credentials</div>
+      </div>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <div class="cert-org">Offensive Security</div>
+          <h3>OSCP — Certified Professional</h3>
+          <p>Hands-on penetration testing certification covering enumeration, exploitation, privilege escalation, and reporting across a live lab environment.</p>
+          <span class="cert-status">Earned 2025</span><br>
+          <a class="cert-link" href="#">→ verify credential</a>
+        </div>
+        <div class="cert-card">
+          <div class="cert-org">EC-Council</div>
+          <h3>CEH — Certified Ethical Hacker</h3>
+          <p>Covers reconnaissance, scanning, system hacking, malware threats, sniffing, social engineering, and web application attacks.</p>
+          <span class="cert-status">Earned 2024</span><br>
+          <a class="cert-link" href="#">→ verify credential</a>
+        </div>
+        <div class="cert-card">
+          <div class="cert-org">CompTIA</div>
+          <h3>Security+</h3>
+          <p>Foundational certification validating core skills in network security, risk management, cryptography, and threat identification.</p>
+          <span class="cert-status">Earned 2023</span><br>
+          <a class="cert-link" href="#">→ verify credential</a>
+        </div>
+        <div class="cert-card">
+          <div class="cert-org">Offensive Security</div>
+          <h3>OSWE — Web Expert</h3>
+          <p>Advanced certification focused on source-code-assisted web application penetration testing and exploit development.</p>
+          <span class="cert-status">In progress</span><br>
+          <a class="cert-link" href="#">→ view syllabus</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-head">
+        <div class="section-title"><span class="num">02.</span>Projects</div>
+        <div class="section-note">research &amp; tooling</div>
+      </div>
+      <div class="project-list">
+        <div class="project">
+          <div class="pyear">2026</div>
+          <div>
+            <h3>Subdomain Recon Automation Framework</h3>
+            <p>A modular Python toolkit that chains subdomain enumeration, port scanning, and screenshot capture into a single recon pipeline with HTML reporting.</p>
+            <div class="tags"><span>Python</span><span>Recon</span><span>Automation</span></div>
+          </div>
+          <a class="plink" href="#">→ view repo</a>
+        </div>
+        <div class="project">
+          <div class="pyear">2025</div>
+          <div>
+            <h3>SQLi &amp; XSS Detection Burp Extension</h3>
+            <p>Custom Burp Suite extension that flags reflected and stored injection points during active scans, reducing manual triage time.</p>
+            <div class="tags"><span>Java</span><span>Burp Suite</span><span>Web AppSec</span></div>
+          </div>
+          <a class="plink" href="#">→ view repo</a>
+        </div>
+        <div class="project">
+          <div class="pyear">2025</div>
+          <div>
+            <h3>Home Lab Active Directory Range</h3>
+            <p>Built a vulnerable AD environment for practicing Kerberoasting, lateral movement, and privilege escalation techniques in a safe, isolated lab.</p>
+            <div class="tags"><span>Active Directory</span><span>PowerShell</span><span>Lab</span></div>
+          </div>
+          <a class="plink" href="#">→ writeup</a>
+        </div>
+        <div class="project">
+          <div class="pyear">2024</div>
+          <div>
+            <h3>Responsible Disclosure — E-commerce IDOR</h3>
+            <p>Identified and reported an insecure direct object reference vulnerability exposing customer order data; coordinated fix with vendor security team.</p>
+            <div class="tags"><span>Bug Bounty</span><span>IDOR</span><span>Disclosure</span></div>
+          </div>
+          <a class="plink" href="#">→ read report</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="section-head">
+        <div class="section-title"><span class="num">03.</span>Skills</div>
+        <div class="section-note">tools &amp; techniques</div>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-col">
+          <h4>Offensive</h4>
+          <ul>
+            <li>Penetration testing</li>
+            <li>Web application security</li>
+            <li>Network exploitation</li>
+            <li>Social engineering</li>
+          </ul>
+        </div>
+        <div class="skill-col">
+          <h4>Tooling</h4>
+          <ul>
+            <li>Burp Suite / Nmap</li>
+            <li>Metasploit</li>
+            <li>Wireshark</li>
+            <li>Python / Bash</li>
+          </ul>
+        </div>
+        <div class="skill-col">
+          <h4>Knowledge areas</h4>
+          <ul>
+            <li>Active Directory attacks</li>
+            <li>OWASP Top 10</li>
+            <li>Cryptography fundamentals</li>
+            <li>Cloud security (AWS/Azure)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-head">
+        <div class="section-title"><span class="num">04.</span>Contact</div>
+        <div class="section-note">let's talk security</div>
+      </div>
+      <p class="lede">
+        Open to penetration testing engagements, security audits, and
+        collaboration on responsible disclosure programs. Reach out via any
+        of the channels below.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:contact@example.com">contact@example.com</a>
+        <a href="#">github.com/yourhandle</a>
+        <a href="#">linkedin.com/in/yourhandle</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 — All testing performed with explicit authorization</span>
+    <span>built with care, not exploits</span>
+  </div>
+</footer>
+<script>
+  const words = ['whoami', 'raven', 'ethical hacker'];
+  let idx = 0;
+  const logoText = document.getElementById('logo-text');
+
+  const typeSpeed = 120;    // ms per character when typing
+  const deleteSpeed = 80;   // ms per character when deleting
+  const holdTime = 3000;    // pause after fully typed before deleting
+
+  function typeWord(word, i, callback){
+    if (i <= word.length){
+      logoText.textContent = word.slice(0, i);
+      setTimeout(() => typeWord(word, i + 1, callback), typeSpeed);
+    } else {
+      setTimeout(callback, holdTime);
+    }
+  }
+
+  function deleteWord(word, i, callback){
+    if (i >= 0){
+      logoText.textContent = word.slice(0, i);
+      setTimeout(() => deleteWord(word, i - 1, callback), deleteSpeed);
+    } else {
+      callback();
+    }
+  }
+
+  function cycle(){
+    const word = words[idx];
+    typeWord(word, 0, () => {
+      deleteWord(word, word.length, () => {
+        idx = (idx + 1) % words.length;
+        cycle();
+      });
+    });
+  }
+
+  cycle();
+
+  // Reveal sections on scroll
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  sections.forEach(sec => observer.observe(sec));
+
+  // Mark active nav link based on scroll position
+  const navLinks = document.querySelectorAll('nav a');
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(sec => { if (sec.id) navObserver.observe(sec); });
+</script>
+</body>
+</html>
